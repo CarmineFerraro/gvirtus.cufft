@@ -96,7 +96,7 @@ private:
 };
 
 Display *GetDisplay();
-GLXDrawable GetDrawable(GLXDrawable handler, GLHandler *pThis);
+GLXDrawable GetDrawable(GLXDrawable handler, GLHandler *pThis, bool use_shm);
 XVisualInfo *GetVisualInfo();
 
 #define GL_ROUTINE_HANDLER(name) Result * handle##name(GLHandler * pThis, Buffer * in)

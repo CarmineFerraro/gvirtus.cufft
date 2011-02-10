@@ -62,8 +62,6 @@ static TcpCommunicator *mspDispenserCommunicator;
 static pthread_spinlock_t *mspLock;
 
 static void __attribute__((constructor)) _GL_init(void) {
-#if 0
-    string communicator = string(getenv("COMMUNICATOR"));
     const char *shmtype = getenv("SHM");
     if (shmtype == NULL)
         mShmType = NONE;
@@ -76,8 +74,6 @@ static void __attribute__((constructor)) _GL_init(void) {
         mShmType = NONE;
     }
     Frontend::GetFrontend();
-#endif
-    mShmType = NONE;
     mspRoutines = new Buffer();
     msRoutinesEmpty = true;
     if (!XInitThreads()) {
@@ -127,13 +123,13 @@ static void InitFramebuffer() {
         return;
     } else if (mShmType == POSIX) {
         fd = shm_open(mspShmName, O_RDWR, S_IRUSR | S_IWUSR);
-        if (ftruncate(fd, 300 * 300 * sizeof (int)));
+        if (ftruncate(fd, 512 * 512 * sizeof (int) + sizeof(pthread_spinlock_t)));
     } else {
         fd = open("/dev/vmshm0", O_RDWR);
         ioctl(fd, 0, mspShmName);
     }
     mspLock = reinterpret_cast<pthread_spinlock_t *> (mmap(NULL,
-            300 * 300 * sizeof (int), PROT_READ | PROT_WRITE, MAP_SHARED, fd,
+            512 * 512 * sizeof (int) + sizeof(pthread_spinlock_t), PROT_READ | PROT_WRITE, MAP_SHARED, fd,
             0));
     mspFramebuffer = ((char *) mspLock) + sizeof (pthread_spinlock_t);
 }
@@ -169,24 +165,29 @@ static void *update(void *__w) {
     WindowInfo *w = (WindowInfo *) __w;
     InitFramebuffer();
     char *buffer;
-    while (true) {
-        Lock();
         buffer = GetFramebuffer();
+        XImage *img = XCreateImage(w->mpDpy, CopyFromParent,
+                24, ZPixmap, 0, buffer, w->mWidth, w->mHeight, 32,
+                w->mWidth * 4);
+    while (true) {
 #if 0
         for (int i = 0; i < 300 / 2; i++) {
             memmove(row, buffer + (299 - i) * 300 * sizeof (int), 300 * sizeof (int));
             memmove(buffer + (299 - i) * 300 * sizeof (int), buffer + i * 300 * sizeof (int), 300 * sizeof (int));
             memmove(buffer + i * 300 * sizeof (int), row, 300 * sizeof (int));
         }
-#endif
         XImage *img = XCreateImage(w->mpDpy, CopyFromParent,
                 24, ZPixmap, 0, buffer, w->mWidth, w->mHeight, 32,
                 w->mWidth * 4);
+#endif
+        Lock();
+        buffer = GetFramebuffer();
+        memmove(img->data, buffer, w->mWidth * w->mHeight * sizeof(int));
         img->bits_per_pixel = 32;
         XPutImage(w->mpDpy, w->mDrawable, DefaultGC(w->mpDpy, 0), img, 0, 0, 0,
                 0, w->mWidth, w->mHeight);
         Unlock();
-        usleep(25000);
+        usleep(1000);
     }
     return NULL;
 }

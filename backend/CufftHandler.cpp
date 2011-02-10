@@ -131,7 +131,7 @@ const char *GLHandler::InitFramebuffer(size_t size, bool use_shm) {
     cout << "InitFramebuffer. Use SHM: " << use_shm << ". Size: " << size << endl;
 
     if (!use_shm) {
-        const char *comm = "tcp://127.0.0.1:4444";
+        const char *comm = "tcp://10.0.2.2:4444";
         communicator = (char *) comm;
         mpFramebuffer = new char[size];
         memset(mpFramebuffer, 0, size);
@@ -203,7 +203,7 @@ XVisualInfo *GetVisualInfo() {
     return vi;
 }
 
-GLXDrawable GetDrawable(GLXDrawable handler, GLHandler *pThis) {
+GLXDrawable GetDrawable(GLXDrawable handler, GLHandler *pThis, bool use_shm) {
     map<GLXDrawable, GLXDrawable>::iterator i = msDrawables.find(handler);
     if (i != msDrawables.end())
         return i->second;
@@ -214,7 +214,7 @@ GLXDrawable GetDrawable(GLXDrawable handler, GLHandler *pThis) {
     XMapWindow(GetDisplay(), drawable);
     msDrawables.insert(make_pair(handler, drawable));
     msDispensers.insert(make_pair(handler, pThis->InitFramebuffer(512 * 512
-            * sizeof (int), false)));
+            * sizeof (int), use_shm)));
     return drawable;
 }
 

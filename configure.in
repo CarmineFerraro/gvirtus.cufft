@@ -2,9 +2,9 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.63])
-AC_INIT(gvirtus-opengl, 01-beta2, http://osl.uniparthenope.it/mailman/listinfo/gvirtus-devel)
+AC_INIT(gvirtus-cufft, 01-beta2, http://osl.uniparthenope.it/mailman/listinfo/gvirtus-devel)
 AM_INIT_AUTOMAKE
-AC_CONFIG_SRCDIR([frontend/GL.cpp])
+AC_CONFIG_SRCDIR([frontend/Cufft.cpp])
 AC_CONFIG_HEADERS([config.h])
 
 # Checks for programs.
