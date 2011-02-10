@@ -33,25 +33,13 @@
  * 
  */
 
-#ifndef _GLHANDLER_H
-#define	_GLHANDLER_H
-
-#include <iostream>
-#include <map>
-#include <string>
-#include <cstdio>
-
-#include <sys/mman.h>
-#include <sys/stat.h>
-#include <fcntl.h>
+#ifndef _CUFFTHANDLER_H
+#define	_CUFFTHANDLER_H
 
 #include "Handler.h"
 #include "Result.h"
 
-#include <X11/Xlib.h>
-#include <GL/glx.h>
-
-#include <semaphore.h>
+#include <cufft.h>
 
 /**						
  * CudaRtHandler is used by Backend's Process(es) for storing and retrieving
@@ -60,49 +48,20 @@
  * named CUDA Runtime routine unmarshalling the input parameters from the
  * provided Buffer.
  */
-class GLHandler : public Handler {
+class CufftHandler : public Handler {
 public:
-    GLHandler();
-    virtual ~GLHandler();
+    CufftHandler();
+    virtual ~CufftHandler();
     bool CanExecute(std::string routine);
     Result * Execute(std::string routine, Buffer * input_buffer);
-    const char *InitFramebuffer(size_t size, bool use_shm);
-    char *GetFramebuffer();
-    inline void Lock() {
-        if(mpLock)
-            pthread_spin_lock(mpLock);
-    }
-    inline void Unlock() {
-        if(mpLock)
-            pthread_spin_unlock(mpLock);
-    }
-    inline void RequestUpdate() {
-        sem_post(&mProducer);
-        sem_wait(&mConsumer);
-    }
-    inline bool RequestPending() {
-        return sem_trywait(&mProducer) == 0;
-    }
-    inline void Updated() {
-        sem_post(&mConsumer);
-    }
 private:
-    sem_t mProducer, mConsumer;
     void Initialize();
-    typedef Result * (*GLRoutineHandler)(GLHandler *, Buffer *);
-    static std::map<std::string, GLRoutineHandler> * mspHandlers;
-    char *mpFramebuffer;
-    pthread_spinlock_t *mpLock;
+    typedef Result * (*CufftRoutineHandler)(CufftHandler *, Buffer *);
+    static std::map<std::string, CufftRoutineHandler> * mspHandlers;
 };
 
-Display *GetDisplay();
-GLXDrawable GetDrawable(GLXDrawable handler, GLHandler *pThis, bool use_shm);
-XVisualInfo *GetVisualInfo();
-
-#define GL_ROUTINE_HANDLER(name) Result * handle##name(GLHandler * pThis, Buffer * in)
-#define GL_ROUTINE_HANDLER_PAIR(name) make_pair("gl" #name, handle##name)
-
-#include "GLHandler_handlers.h"
+#define CUFFT_ROUTINE_HANDLER(name) Result * handle##name(CufftHandler * pThis, Buffer * in)
+#define CUFFT_ROUTINE_HANDLER_PAIR(name) make_pair("cufft" #name, handle##name)
 
 #endif	/* _CUDARTHANDLER_H */
 

@@ -2,27 +2,12 @@
 <configurationDescriptor version="69">
   <logicalFolder name="root" displayName="root" projectFiles="true">
     <df name="backend" root="backend">
-      <in>GLHandler.cpp</in>
-      <in>GLHandler.h</in>
-      <in>GLHandler_b.cpp</in>
-      <in>GLHandler_g.cpp</in>
-      <in>GLHandler_m.cpp</in>
-      <in>GLHandler_v.cpp</in>
-      <in>GLHandler_x.cpp</in>
+      <in>CufftHandler.cpp</in>
+      <in>CufftHandler.h</in>
     </df>
     <df name="frontend" root="frontend">
-      <in>GL.cpp</in>
-      <in>GL.h</in>
-      <in>GL_b.cpp</in>
-      <in>GL_d.cpp</in>
-      <in>GL_e.cpp</in>
-      <in>GL_g.cpp</in>
-      <in>GL_m.cpp</in>
-      <in>GL_u.cpp</in>
-      <in>GL_unsupported.cpp</in>
-      <in>GL_unsupported.h</in>
-      <in>GL_v.cpp</in>
-      <in>GL_x.cpp</in>
+      <in>Cufft.cpp</in>
+      <in>Cufft.h</in>
     </df>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -55,6 +40,7 @@
           <ccTool>
             <incDir>
               <pElem>/home/cjg/gvirtus/include/gvirtus</pElem>
+              <pElem>/opt/cuda/include</pElem>
             </incDir>
           </ccTool>
         </makeTool>

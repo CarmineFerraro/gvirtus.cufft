@@ -4,5 +4,5 @@ libcufft_backend_la_SOURCES = \
 CufftHandler.cpp\
 CufftHandler.h
 
-libopengl_backend_la_LIBADD = -lcufft
+libcufft_backend_la_LIBADD = -lcufft
 

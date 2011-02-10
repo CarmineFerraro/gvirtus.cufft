@@ -23,16 +23,3 @@
  *             Department of Applied Science
  */
 
-#ifndef GL_H
-#define	GL_H
-
-#include <Frontend.h>
-#include <GL/glx.h>
-#include <Buffer.h>
-
-Frontend *GetFrontend();
-Buffer *AddRoutine(const char *routine);
-void InstantiateUpdater(Display *dpy, GLXDrawable drawable);
-
-#endif	/* GL_H */
-
