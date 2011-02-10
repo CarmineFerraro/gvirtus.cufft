@@ -26,7 +26,7 @@ CND_CONF=Default
 CND_DISTDIR=dist
 
 # Include project Makefile
-include Makefile-gvirtus-opengl.mk
+include Makefile-gvirtus-cufft.mk
 
 # Object Directory
 OBJECTDIR=build/${CND_CONF}/${CND_PLATFORM}

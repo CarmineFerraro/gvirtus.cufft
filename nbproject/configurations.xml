@@ -29,7 +29,7 @@
                    projectFiles="false"
                    kind="IMPORTANT_FILES_FOLDER">
       <itemPath>Makefile</itemPath>
-      <itemPath>Makefile-gvirtus-opengl.mk</itemPath>
+      <itemPath>Makefile-gvirtus-cufft.mk</itemPath>
       <itemPath>configure</itemPath>
       <itemPath>configure.in</itemPath>
     </logicalFolder>
@@ -38,7 +38,7 @@
     <Elem>backend</Elem>
     <Elem>frontend</Elem>
   </sourceRootList>
-  <projectmakefile>Makefile-gvirtus-opengl.mk</projectmakefile>
+  <projectmakefile>Makefile-gvirtus-cufft.mk</projectmakefile>
   <confs>
     <conf name="Default" type="0">
       <toolsSet>
